@@ -1,0 +1,15 @@
+<a href="/">Home </a>
+<hr>
+
+
+<table>
+
+<tr>
+{% load static %}
+
+<td>{{ page.plain_modified_content|linebreaks }}</td>
+<td> <img src="/{{ page.selected_diacritics }}"  width="1000"> </td>
+
+<tr/>
+
+</table>

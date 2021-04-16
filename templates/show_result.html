@@ -1,0 +1,140 @@
+<head> 
+    <style> 
+        h1 { 
+            color:Green; 
+        } 
+        div.scroll { 
+            margin:4px, 4px; 
+            padding:4px; 
+            <!--background-color: green; -->
+            width: 550px; 
+            height: 800px; 
+            overflow-x: hidden; 
+            overflow-x: auto; 
+            text-align:justify; 
+            font-size: 25px;
+        } 
+        
+        .button {
+          transition-duration: 0.4s;
+        }
+
+        .button:hover {
+          background-color: #4CAF50; /* Green */
+          background: #4CAF50; /* Green */
+          color: red;
+        }        
+        
+    </style> 
+</head> 
+<table>
+<tr>
+<td style="vertical-align:top">
+<button onclick="window.location.href='/'">Home</button>
+</td>
+
+<td style="vertical-align:top">
+{% if row.plain_modified_left != '' %}
+<form action="/compare">
+<input type="hidden" name="file" id="file" value="{{page.file}}"/>
+<input type="hidden" name="rotation" id="rotation" value="left"/>
+<input type="submit" onclick="pleaseWait()" value="Compare with left" >
+</form>
+{% endif %}
+</td>
+<td style="vertical-align:top">
+{% if row.plain_modified_right != '' %}
+<form action="/compare">
+<input type="hidden" name="file" id="file" value="{{page.file}}"/>
+<input type="hidden" name="rotation" id="rotation" value="right"/>
+<input type="submit" onclick="pleaseWait()" value="Compare with right" >
+</form>
+{% endif %}
+</td>
+<td style="vertical-align:top">
+    <button onclick='document.getElementById("ocrImg").src = "../{{ page.selected_diacritics }}";'>Selected diacritics</button>
+</td>
+<td style="vertical-align:top">
+    <button onclick='document.getElementById("ocrImg").src = "../{{ page.selected_letters }}";'>Selected letters</button>
+</td>
+<td style="vertical-align:top">
+    <button onclick='document.getElementById("ocrImg").src = "../{{ page.selected_words }}";'>Selected words</button>
+</td>
+<td style="vertical-align:top">
+    <button onclick='document.getElementById("ocrImg").src = "../{{ page.selected_lines }}";'>Selected lines</button>
+</td>
+<td style="vertical-align:top">
+    <button onclick='document.getElementById("ocrImg").src = "../{{ page.selected_pargraph }}";'>Selected pargraph</button>
+</td>
+<td style="vertical-align:top">
+{% if row.plain_modified_right != '' %}
+<button onclick="fnRestore()">Restore OCR text</button>
+<script>
+function fnRestore() {
+  var txt;
+  var r = confirm("Vrati rezultat OCR obrade bez izmena.");
+  if (r == true) {
+    window.location.href = '/restore_ocr_text/?file={{page.file}}&rotation=right';
+  } else {
+  }
+}
+</script>
+</form>
+{% endif %}
+</td>
+
+</tr>
+
+</table>
+
+<hr>
+
+
+<table>
+
+<tr>
+{% load static %}
+
+ 
+<td valign="top">
+
+<form action="/save_corrections">
+<div class="scroll">
+
+<div contenteditable id="modified_text" >{{ page.plain_modified_content|linebreaks }}</div>
+
+<input type="hidden" name="file" id="file" value="{{page.file}}"/>
+<input type="hidden" name="modified_text" id="modified_text_hidden" />
+<script type="text/javascript">
+setInterval(function () {
+  document.getElementById("modified_text_hidden").value = document.getElementById("modified_text").innerHTML;
+}, 5);
+</script>
+</div>
+<p align= right>
+<input type="submit" value="Submit" background-color= #4CAF50>
+</p>
+</form>
+</td>
+
+
+
+<td valign="top" width="530">
+<div class="scroll">
+{% for row in list_of_paragraph %}
+<img src="/{{ row }}"  width="500"> <br>
+<br>
+{% endfor %}
+</div>
+</td>
+
+
+
+<td>
+<img id="ocrImg" src="/{{ page.selected_diacritics }}"  width="610"> 
+</td>
+
+    
+<tr/>
+
+</table>

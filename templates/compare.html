@@ -1,0 +1,115 @@
+<head> 
+    <style> 
+        h1 { 
+            color:Green; 
+        } 
+        div.scroll { 
+            margin:4px, 4px; 
+            padding:4px; 
+            <!--background-color: green; -->
+            width: 550px; 
+            height: 800px; 
+            overflow-x: hidden; 
+            overflow-x: auto; 
+            text-align:justify; 
+            font-size: 25px;
+        } 
+        
+        .button {
+          transition-duration: 0.4s;
+        }
+
+        .button:hover {
+          background-color: #4CAF50; /* Green */
+          background: #4CAF50; /* Green */
+          color: red;
+        }        
+        
+    </style> 
+
+<script type="text/javascript">
+setInterval(function () {
+  document.getElementById("modified_text_hidden").value = document.getElementById("modified_text").innerHTML;
+}, 5);
+
+
+function replace_value(element,new_value,div_name) {
+  document.getElementById(element).value = new_value;
+  //document.getElementById(div_name).pointer-events = 'none';
+  //document.getElementById(div_name).style.display = 'none';
+  document.getElementById(div_name).style.background = "#aaaaaa";
+  
+  
+};
+</script>
+
+</head> 
+    
+<button onclick="window.location.href='/'">Home</button>
+<button onclick="window.location.href='/show_result/?file={{page.file}}' ">Back to result page</button>
+
+<hr>
+
+
+<table>
+
+<tr>
+{% load static %}
+
+ 
+
+
+
+
+<td valign="top" width="1200">
+Broj uocenih razlika:  {{num_cases}}
+<div class="scroll">
+{% for row in cc_list %}
+<div id="case{{row.line_cnt}}">
+<hr>
+<!--
+<img src="/{{ row.par_file }}"  width="500"> <br>
+<br>
+-->
+Linija: {{ row.line_disp}}, rec: {{ row.word_pos }}<br>
+<img src="/{{ row.img_line_file }}"  width="800"> <br>
+{{ row.predicted_bold  |safe }}<br>
+{{ row.rotated_bold  |safe}}<br>
+{% if row.missing_pred == "" and row.missing_rotated == "" %}
+<button type="button"  onclick="replace_value('word{{row.line_cnt}}','{{ row.pred_word  }}','case{{row.line_cnt}}')">{{ row.pred_word  }}</button>
+<button type="button"  onclick="replace_value('word{{row.line_cnt}}','{{ row.rotated_word  }}','case{{row.line_cnt}}')">{{ row.rotated_word }}</button> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" id="corected_word{{row.line_cnt}}" name="corected_word{{row.line_cnt}}" value = "{{ row.pred_word }}"><button type="button" onclick="replace_value('word{{row.line_cnt}}',document.getElementById('corected_word{{row.line_cnt}}').value,'case{{row.line_cnt}}')">Izmeni</button> <br>
+{% endif %}
+<input type="text" id="corected_txt{{row.line_cnt}}" name="corected_txt{{row.line_cnt}}" value = "{{ row.predicted }}" size='100'><button type="button" onclick="replace_value('line{{row.line_cnt}}',document.getElementById('corected_txt{{row.line_cnt}}').value,'case{{row.line_cnt}}')">Izmeni</button> <br>
+
+<hr>
+
+
+<br>
+</div>
+
+{% endfor %}
+
+<div class="results">
+<form action="/show_result">
+<input type="hidden" name="file" id="file" value="{{page.file}}"/>
+<input type="hidden" id="num_cases" name="num_cases" value = "{{num_cases}}">
+<input type="hidden" id="rotation" name="rotation" value = "{{rotation}}">
+
+{% for row in cc_list %}
+<input type="hidden" id="word{{row.line_cnt}}" name="word{{row.line_cnt}}" value = "">
+<input type="hidden" id="line{{row.line_cnt}}" name="line{{row.line_cnt}}" value = "">
+{% endfor %}
+
+<input type="submit" value="Submit" >
+</form>
+</div>
+</td>
+
+
+
+    
+<tr/>
+
+</table>

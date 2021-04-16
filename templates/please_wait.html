@@ -1,0 +1,40 @@
+<script>
+    window.onpageshow = function(evt) {
+        // If persisted then it is in the page cache, force a reload of the page.
+        if (evt.persisted) {
+            //document.body.style.display = "none";
+            document.getElementById("wait_field").style.display = 'none';
+            //location.reload();
+        }
+    };
+
+    function pleaseWait(){
+        var d = document.getElementById("wait_field")
+        var t = document.getElementById("wait_table")
+        var ts = document.getElementById("top_space")
+        d.style.display = 'inline';
+
+        var myElement = document.getElementById('wait_field'),
+            pageWidth = window.innerWidth,
+            pageHeight = window.innerHeight,
+            myElementWidth = 1800,
+            myElementHeight = 1800;
+        ts.style.height=((pageHeight/2)-100)+"px"
+    }
+</script>
+
+<div id="wait_field" valign="center" style="position: fixed; top: 0%; left: 0%; transform: translate(-50%, 0%) font-size:80px; z-index:4; display: none;">
+    <table id ="wait_table" style="width: 1920px; height: 1800px; opacity:0.65" bgcolor = "#ffffff" valign="center">
+    <tr>
+    <td>
+    <div id ="top_space" style="height: 400px" ></div>
+    </td>
+    </tr>
+
+    <tr>
+    <td style="height: 1920px;" valign="middle" align="center">
+    <img style="margin-left: auto; margin-right: auto"  src="\Cyrilic_OCR\img\please_wait.gif" alt="Please wait">
+    <td/>
+    </tr>
+    </table>
+</div>

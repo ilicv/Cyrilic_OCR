@@ -1,0 +1,40 @@
+<head> 
+    <style> 
+        h1 { 
+            color:Green; 
+        } 
+        div.scroll { 
+            margin:4px, 4px; 
+            padding:4px; 
+            <!--background-color: green; -->
+            width: 5500px; 
+            height: 800px; 
+            overflow-x: hidden; 
+            overflow-x: auto; 
+            text-align:justify; 
+            font-size: 25px;
+        } 
+    </style> 
+</head> 
+    
+<a href="/">Home </a>
+<hr>
+
+
+<table>
+
+<tr>
+{% load static %}
+
+ 
+<td>
+
+<div contenteditable id="modified_text">{{ page.modified_text|linebreaks }}</div>
+<td>
+<img src="/{{ page.selected_diacritics }}"  width="610"> 
+</td>
+
+
+<tr/>
+
+</table>
