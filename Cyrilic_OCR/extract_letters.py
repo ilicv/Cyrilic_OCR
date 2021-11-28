@@ -33,6 +33,10 @@ def set_tag(tag, value):
 with codecs.open('selected_letters.txt', encoding='utf-8') as f:
     for line in f:
         selected = line.strip('\n')
+        
+with open('tesseract_language.ini', 'r') as f:
+    for line in f:
+        tesseract_language = line.strip('\n')
 
 doc_structure = []
 
@@ -113,7 +117,12 @@ def save_letter(crop_img, t, letters_cnt, i, crd, letters, result_folder, letter
 
         img_name = letter_name + 'letter'+str(crd.letter_id).zfill(5)+'.bmp'
         cv2.imwrite(result_folder+'letters\\'+ img_name, crop_img)
-        ocr_letter = pytesseract.image_to_string(crop_img,lang='srp', config='--psm 10')
+        #ocr_letter = pytesseract.image_to_string(crop_img,lang='srp', config='--psm 10')
+        ocr_letter = pytesseract.image_to_string(crop_img,lang=tesseract_language, config='--psm 10')
+        if  ord(ocr_letter[-1]) == 12:
+            ocr_letter = ocr_letter[:-1]
+            ocr_letter = ocr_letter[:-1]
+
         crd.ocr_letter = ocr_letter
         crd.img_name = img_name
 
@@ -181,7 +190,8 @@ def get_crd_list(filename):
     height = img.shape[0]
     width = img.shape[1]
 
-    d = pytesseract.image_to_boxes(img, output_type=Output.DICT, lang='srp')
+    #d = pytesseract.image_to_boxes(img, output_type=Output.DICT, lang='srp') <<<<<
+    d = pytesseract.image_to_boxes(img, output_type=Output.DICT, lang=tesseract_language)
     n_boxes = len(d['char'])
     avr_let_width = 0
     avr_let_height = 0
@@ -480,11 +490,25 @@ def find_diacritics(crd_list, filename):
             if (res[16] == 1) and (res[3] == 1):
                 crd.diacritic = 316
 
+            # letter sh 25
             if (res[22] == 1):
                crd.diacritic = 22
 
+            # letter p  24
             if (res[23] == 1):
                crd.diacritic = 23
+
+             # letter g 27
+            if (res[24] == 1):
+               crd.diacritic = 24
+               #print ('G')
+               #exit()
+
+            # letter v  26
+            if (res[25] == 1):
+               crd.diacritic = 25
+               #print ('V')
+               #exit()
 
 
     with codecs.open(result_folder+"letters_coordinates.txt", "w", encoding="utf-8") as f:
@@ -506,6 +530,11 @@ def extract_letters(filename):
             doc_structure.append(line)
 
 
+    print ('get_crd_list...')
     crd_list, avr_let_width, avr_let_height = get_crd_list(filename)
+    print ('check_crd...')
     crd_list = check_crd(crd_list, avr_let_width, avr_let_height)
+    print ('find_diacritics...')
     find_diacritics(crd_list, filename)
+
+#extract_letters('scan\\'+'Dubrovnik0019_small2.tif')

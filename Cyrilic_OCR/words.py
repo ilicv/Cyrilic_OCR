@@ -8,6 +8,10 @@ import os
 
 line_similariti = 0.35
 
+with open('tesseract_language.ini', 'r') as f:
+    for line in f:
+        tesseract_language = line.strip('\n')
+
 def get_tag(tag):
     res = ''
     tag_beg = '<'+tag+'>'
@@ -48,7 +52,8 @@ def extract_img(img2, x1, x2, y1, y2, offset):
         x2 = width
     crop_img = img2[y1:(y2), (x1):(x2)]
 
-    crop_text = pytesseract.image_to_string(crop_img, lang='srp')
+    #crop_text = pytesseract.image_to_string(crop_img, lang='srp')
+    crop_text = pytesseract.image_to_string(crop_img, lang=tesseract_language)
 
     return (crop_img, crop_text)
 
@@ -136,7 +141,9 @@ def get_words(filename):
     word_pos = 0
     word_end = 0
 
-    plain_text = pytesseract.image_to_string(img, lang='srp')
+    #plain_text = pytesseract.image_to_string(img, lang='srp')
+    plain_text = pytesseract.image_to_string(img, lang=tesseract_language)
+    
     with codecs.open(result_folder+"plain.txt", "w", encoding="utf-8") as f:
         f.write(plain_text)
     plain_text= plain_text.splitlines()
@@ -145,7 +152,8 @@ def get_words(filename):
     lines_list = []
     line_map = []
     words = []
-    d = pytesseract.image_to_data(img, output_type=Output.DICT, lang='srp')
+    #d = pytesseract.image_to_data(img, output_type=Output.DICT, lang='srp')
+    d = pytesseract.image_to_data(img, output_type=Output.DICT, lang=tesseract_language)
     n_boxes = len(d['level'])
     with codecs.open(result_folder+"word_output.txt", "w", encoding="utf-8") as f:
         for i in range(n_boxes):

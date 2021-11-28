@@ -104,10 +104,11 @@ model2 = create_model()
 model3 = create_model()
 model4 = create_model()
 
-config = tf.ConfigProto()
+#config = tf.ConfigProto()
+config = tf.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
-
+#session = tf.Session(config=config)
+session = tf.compat.v1.Session(config=config)
 
 model1_name = "model_connected_img1.h5"
 model2_name = "model_connected_img2.h5"

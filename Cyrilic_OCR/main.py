@@ -8,6 +8,7 @@ import compare as cmp
 import sys
 import datetime
 script_start = datetime.datetime.now()
+print (script_start)
 
 
 # read commandline arguments, first

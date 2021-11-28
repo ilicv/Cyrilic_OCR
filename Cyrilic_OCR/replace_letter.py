@@ -18,7 +18,7 @@ with codecs.open("insert_letters.txt", encoding="utf-8") as f:
 def get_letter(crd):
     letter_fnd = 'nf'
 
-    if (crd.diacritic != 16) and (crd.diacritic != 316)and (crd.diacritic != 22)and (crd.diacritic != 23):
+    if (crd.diacritic != 16) and (crd.diacritic != 316)and (crd.diacritic != 22)and (crd.diacritic != 23)and (crd.diacritic != 24)and (crd.diacritic != 25):
         letter_with_d = ''
         bottom = ''
 
@@ -60,26 +60,43 @@ def get_letter(crd):
                 letter_fnd = letter_with_d[crd.diacritic].upper() + bottom
 
     else:
+        # letter u
         if crd.diacritic == 16:
             line = ins_letters[5]
             s = line.split(',')
             letter_fnd = s[0]
 
+        # letter u"
         if crd.diacritic == 316:
             line = ins_letters[5]
             s = line.split(',')
             letter_fnd = s[3]
 
+        # letter sh
         if crd.diacritic == 22:
             line = ins_letters[10]
             s = line.split(',')
             letter_fnd = s[0]
 
+        # letter p
         if crd.diacritic == 23:
             line = ins_letters[11]
             s = line.split(',')
             letter_fnd = s[0]
 
+        # letter g
+        if crd.diacritic == 24:
+            line = ins_letters[16]
+            s = line.split(',')
+            letter_fnd = s[0]
+            
+        # letter v
+        if crd.diacritic == 25:
+            line = ins_letters[17]
+            s = line.split(',')
+            letter_fnd = s[0]
+
+        #print (ins_letters[17])
     return letter_fnd
 
 
@@ -157,4 +174,4 @@ def replace_diacritics(filename):
         for line in plain_txt:
             f.write("%s" % line+'\n')
 
-#replace_diacritics('scan\\'+'Vasojevici0035_crop.tif')
+#replace_diacritics('scan\\'+'Dubrovnik0019_small2.tif')
